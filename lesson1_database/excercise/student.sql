@@ -10,8 +10,6 @@ create table student (
     primary key (id)
 );
 
-use student_management;
-
 create table teacher (
 	id int auto_increment,
     name varchar(100),
@@ -20,9 +18,7 @@ create table teacher (
     primary key (id)
 );
 
-use student_management;
-
-create table class (studentstudent
+create table class (
 	id int auto_increment,
     name varchar(100),
     primary key (id)
