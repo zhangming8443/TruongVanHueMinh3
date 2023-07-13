@@ -1,124 +1,136 @@
 CREATE DATABASE furama_management;
 
 use furama_management;
-create table vi_tri (
-	ma_vi_tri int,
-    ten_vi_tri varchar(45),
-    primary key (ma_vi_tri)
+
+CREATE TABLE vi_tri (
+    ma_vi_tri INT,
+    ten_vi_tri VARCHAR(45),
+    PRIMARY KEY (ma_vi_tri)
 );
 
-create table trinh_do (
-	ma_trinh_do int,
-    ten_trinh_do varchar(45),
-    primary key (ma_trinh_do)
+CREATE TABLE trinh_do (
+    ma_trinh_do INT,
+    ten_trinh_do VARCHAR(45),
+    PRIMARY KEY (ma_trinh_do)
 );
 
 
-create table bo_phan (
-	ma_bo_phan int,
-    ten_bo_phan varchar(45),
-   primary key (ma_bo_phan)
+CREATE TABLE bo_phan (
+    ma_bo_phan INT,
+    ten_bo_phan VARCHAR(45),
+    PRIMARY KEY (ma_bo_phan)
 );
 
-create table loai_khach (
-	ma_loai_khach int,
-    ten_loai_khach varchar(45),
-    primary key (ma_loai_khach)
+CREATE TABLE loai_khach (
+    ma_loai_khach INT,
+    ten_loai_khach VARCHAR(45),
+    PRIMARY KEY (ma_loai_khach)
 );
 
-create table kieu_thue (
-	ma_kieu_thue int,
-    ten_kieu_thue varchar(45),
-    primary key (ma_kieu_thue)
+CREATE TABLE kieu_thue (
+    ma_kieu_thue INT,
+    ten_kieu_thue VARCHAR(45),
+    PRIMARY KEY (ma_kieu_thue)
 );
 
-create table loai_dich_vu (
-	ma_loai_dich_vu int,
-    ten_loai_dich_vu varchar(45),
-    primary key (ma_loai_dich_vu)
+CREATE TABLE loai_dich_vu (
+    ma_loai_dich_vu INT,
+    ten_loai_dich_vu VARCHAR(45),
+    PRIMARY KEY (ma_loai_dich_vu)
 );
 
-create table dich_vu_di_kem (
-	ma_dich_vu_di_kem int,
-	ten_dich_vu_di_kem varchar(45),
-    gia double,
-    don_vi varchar(10),
-    trang_thai varchar(45),
-    primary key (ma_dich_vu_di_kem)
+CREATE TABLE dich_vu_di_kem (
+    ma_dich_vu_di_kem INT,
+    ten_dich_vu_di_kem VARCHAR(45),
+    gia DOUBLE,
+    don_vi VARCHAR(10),
+    trang_thai VARCHAR(45),
+    PRIMARY KEY (ma_dich_vu_di_kem)
 );
 
-create table nhan_vien (
-	ma_nhan_vien int,
-    ho_ten varchar(45),
-    ngay_sinh date,
-    so_cmnd varchar(45),
-    luong double,
-    so_dien_thoai varchar(45),
-    email varchar(45),
-    dia_chi varchar(45),
-    ma_vi_tri int,
-	ma_trinh_do int,
-	ma_bo_phan int,    
-    primary key (ma_nhan_vien),
-	foreign key (ma_vi_tri) references vi_tri (ma_vi_tri),
-	foreign key (ma_trinh_do) references trinh_do (ma_trinh_do),
-	foreign key (ma_bo_phan) references bo_phan (ma_bo_phan)
+CREATE TABLE nhan_vien (
+    ma_nhan_vien INT,
+    ho_ten VARCHAR(45),
+    ngay_sinh DATE,
+    so_cmnd VARCHAR(45),
+    luong DOUBLE,
+    so_dien_thoai VARCHAR(45),
+    email VARCHAR(45),
+    dia_chi VARCHAR(45),
+    ma_vi_tri INT,
+    ma_trinh_do INT,
+    ma_bo_phan INT,
+    PRIMARY KEY (ma_nhan_vien),
+    FOREIGN KEY (ma_vi_tri)
+        REFERENCES vi_tri (ma_vi_tri),
+    FOREIGN KEY (ma_trinh_do)
+        REFERENCES trinh_do (ma_trinh_do),
+    FOREIGN KEY (ma_bo_phan)
+        REFERENCES bo_phan (ma_bo_phan)
 );
 
-create table khach_hang (
-	ma_khach_hang int,
-    ho_ten varchar(45),
-    ngay_sinh date,
-    gioi_tinh bit(1),
-    so_cmnd varchar(45),
-    so_dien_thoai varchar(45),
-    email varchar(45),
-    dia_chi varchar(45),   
-	ma_loai_khach int,
-    primary key (ma_khach_hang),
-	foreign key (ma_loai_khach) references loai_khach (ma_loai_khach)
+CREATE TABLE khach_hang (
+    ma_khach_hang INT,
+    ho_ten VARCHAR(45),
+    ngay_sinh DATE,
+    gioi_tinh BIT(1),
+    so_cmnd VARCHAR(45),
+    so_dien_thoai VARCHAR(45),
+    email VARCHAR(45),
+    dia_chi VARCHAR(45),
+    ma_loai_khach INT,
+    PRIMARY KEY (ma_khach_hang),
+    FOREIGN KEY (ma_loai_khach)
+        REFERENCES loai_khach (ma_loai_khach)
 );
 
-create table dich_vu (
-	ma_dich_vu int,
-    ten_dich_vu varchar(45),
-    dien_tich int,
-    chi_phi_thue double,
-    so_nguoi_toi_da int,
-    tieu_chuan_phong varchar(45),
-    mo_ta_tien_nghi_khac varchar(45),
-    dien_tich_ho_boi double,
-    so_tang int,
-    dich_vu_mien_phi_di_kem text,
-    ma_kieu_thue int,
-    ma_loai_dich_vu int,
-    primary key (ma_dich_vu),
-    foreign key (ma_kieu_thue) references kieu_thue (ma_kieu_thue),
-    foreign key (ma_loai_dich_vu) references loai_dich_vu (ma_loai_dich_vu)    
+CREATE TABLE dich_vu (
+    ma_dich_vu INT,
+    ten_dich_vu VARCHAR(45),
+    dien_tich INT,
+    chi_phi_thue DOUBLE,
+    so_nguoi_toi_da INT,
+    tieu_chuan_phong VARCHAR(45),
+    mo_ta_tien_nghi_khac VARCHAR(45),
+    dien_tich_ho_boi DOUBLE,
+    so_tang INT,
+    dich_vu_mien_phi_di_kem TEXT,
+    ma_kieu_thue INT,
+    ma_loai_dich_vu INT,
+    PRIMARY KEY (ma_dich_vu),
+    FOREIGN KEY (ma_kieu_thue)
+        REFERENCES kieu_thue (ma_kieu_thue),
+    FOREIGN KEY (ma_loai_dich_vu)
+        REFERENCES loai_dich_vu (ma_loai_dich_vu)
 );
 
-create table hop_dong (
-	ma_hop_dong int,
-    ngay_lam_hop_dong datetime,
-    ngay_ket_thuc datetime,
-    tien_dat_coc double,
-    ma_nhan_vien int,
-    ma_khach_hang int,
-    ma_dich_vu int,
-    primary key (ma_hop_dong),
-    foreign key (ma_nhan_vien) references nhan_vien (ma_nhan_vien),
-    foreign key (ma_khach_hang) references khach_hang (ma_khach_hang),
-    foreign key (ma_dich_vu) references dich_vu (ma_dich_vu)
+CREATE TABLE hop_dong (
+    ma_hop_dong INT,
+    ngay_lam_hop_dong DATETIME,
+    ngay_ket_thuc DATETIME,
+    tien_dat_coc DOUBLE,
+    ma_nhan_vien INT,
+    ma_khach_hang INT,
+    ma_dich_vu INT,
+    PRIMARY KEY (ma_hop_dong),
+    FOREIGN KEY (ma_nhan_vien)
+        REFERENCES nhan_vien (ma_nhan_vien),
+    FOREIGN KEY (ma_khach_hang)
+        REFERENCES khach_hang (ma_khach_hang),
+    FOREIGN KEY (ma_dich_vu)
+        REFERENCES dich_vu (ma_dich_vu)
 );
 
-create table hop_dong_chi_tiet (
-	ma_hop_dong_chi_tiet int,
-	so_luong int,
-    ma_hop_dong int,
-    ma_dich_vu_di_kem int,
-    primary key (ma_hop_dong_chi_tiet),
-    foreign key (ma_hop_dong) references hop_dong (ma_hop_dong),
-    foreign key (ma_dich_vu_di_kem) references dich_vu_di_kem (ma_dich_vu_di_kem)
+CREATE TABLE hop_dong_chi_tiet (
+    ma_hop_dong_chi_tiet INT,
+    so_luong INT,
+    ma_hop_dong INT,
+    ma_dich_vu_di_kem INT,
+    PRIMARY KEY (ma_hop_dong_chi_tiet),
+    FOREIGN KEY (ma_hop_dong)
+        REFERENCES hop_dong (ma_hop_dong),
+    FOREIGN KEY (ma_dich_vu_di_kem)
+        REFERENCES dich_vu_di_kem (ma_dich_vu_di_kem)
 );
 insert into furama_management.vi_tri (ma_vi_tri, ten_vi_tri) value
 ('1', 'Quản Lý'),
@@ -218,19 +230,49 @@ insert into furama_management.hop_dong_chi_tiet (ma_hop_dong_chi_tiet, so_luong,
 ('7', '2', '1', '2'),
 ('8', '2', '12', '2');
 
--- request 1 
+-- request 2 
 
 select *
 from nhan_vien
 where ho_ten regexp '^[H,K,T]' and char_length(ho_ten) <= 15;
 
--- request 2
+-- request 3
 
-select *
+SELECT 
+    *
+FROM
+    khach_hang
+WHERE
+    dia_chi LIKE '%Quảng Trị%'
+        OR dia_chi LIKE '%Đà Nẵng%'
+        AND TIMESTAMPDIFF(YEAR,
+        ngay_sinh,
+        CURDATE()) BETWEEN 18 AND 50;
+
+-- request 4
+
+select khach_hang.ma_khach_hang,
+khach_hang.ho_ten,
+count(hop_dong.ma_khach_hang) as so_lan_dat_phong
 from khach_hang
-where dia_chi like '%Quảng Trị%' 
-or dia_chi like '%Đà Nẵng%'
-and  TIMESTAMPDIFF(YEAR, ngay_sinh, CURDATE()) between 18 and 50;
+join
+hop_dong on hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
+join
+loai_khach on loai_khach.ma_loai_khach = khach_hang.ma_loai_khach
+where 
+ten_loai_khach = "Diamond"
+group by ma_khach_hang;
+
+-- request 5
+select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong,
+dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, dv.chi_phi_thue + ifnull((dvdk.gia*hdct.so_luong),0) as tong_tien
+from khach_hang kh
+left join loai_khach lk on kh.ma_loai_khach = lk.ma_loai_khach
+left join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang  
+left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
+left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+left join dich_vu_di_kem dvdk on hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem;
+
 
 
 
