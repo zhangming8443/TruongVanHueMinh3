@@ -29,6 +29,7 @@ CREATE TABLE product (
 CREATE TABLE order_detail (
     o_id INT,
     p_id INT,
+    o_quantity int,
     PRIMARY KEY (o_id , p_id),
     FOREIGN KEY (o_id)
         REFERENCES `order` (o_id),

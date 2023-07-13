@@ -1,6 +1,7 @@
 CREATE DATABASE furama_management;
 
 use furama_management;
+
 CREATE TABLE vi_tri (
     ma_vi_tri INT,
     ten_vi_tri VARCHAR(45),
@@ -229,13 +230,13 @@ insert into furama_management.hop_dong_chi_tiet (ma_hop_dong_chi_tiet, so_luong,
 ('7', '2', '1', '2'),
 ('8', '2', '12', '2');
 
--- request 1 
+-- request 2 
 
 select *
 from nhan_vien
 where ho_ten regexp '^[H,K,T]' and char_length(ho_ten) <= 15;
 
--- request 2
+-- request 3
 
 SELECT 
     *
@@ -248,7 +249,30 @@ WHERE
         ngay_sinh,
         CURDATE()) BETWEEN 18 AND 50;
 
--- request 3
+-- request 4
+
+select khach_hang.ma_khach_hang,
+khach_hang.ho_ten,
+count(hop_dong.ma_khach_hang) as so_lan_dat_phong
+from khach_hang
+join
+hop_dong on hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
+join
+loai_khach on loai_khach.ma_loai_khach = khach_hang.ma_loai_khach
+where 
+ten_loai_khach = "Diamond"
+group by ma_khach_hang;
+
+-- request 5
+select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong,
+dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, dv.chi_phi_thue + ifnull((dvdk.gia*hdct.so_luong),0) as tong_tien
+from khach_hang kh
+left join loai_khach lk on kh.ma_loai_khach = lk.ma_loai_khach
+left join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang  
+left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
+left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
+left join dich_vu_di_kem dvdk on hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem;
+
 
 
 
