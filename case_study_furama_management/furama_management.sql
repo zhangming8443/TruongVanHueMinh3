@@ -231,13 +231,11 @@ insert into furama_management.hop_dong_chi_tiet (ma_hop_dong_chi_tiet, so_luong,
 ('8', '2', '12', '2');
 
 -- request 2 
-
 select *
 from nhan_vien
 where ho_ten regexp '^[H,K,T]' and char_length(ho_ten) <= 15;
 
 -- request 3
-
 SELECT 
     *
 FROM
@@ -250,18 +248,19 @@ WHERE
         CURDATE()) BETWEEN 18 AND 50;
 
 -- request 4
-
-select khach_hang.ma_khach_hang,
-khach_hang.ho_ten,
-count(hop_dong.ma_khach_hang) as so_lan_dat_phong
-from khach_hang
-join
-hop_dong on hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
-join
-loai_khach on loai_khach.ma_loai_khach = khach_hang.ma_loai_khach
-where 
-ten_loai_khach = "Diamond"
-group by ma_khach_hang;
+SELECT 
+    khach_hang.ma_khach_hang,
+    khach_hang.ho_ten,
+    COUNT(hop_dong.ma_khach_hang) AS so_lan_dat_phong
+FROM
+    khach_hang
+        JOIN
+    hop_dong ON hop_dong.ma_khach_hang = khach_hang.ma_khach_hang
+        JOIN
+    loai_khach ON loai_khach.ma_loai_khach = khach_hang.ma_loai_khach
+WHERE
+    ten_loai_khach = 'Diamond'
+GROUP BY ma_khach_hang;
 
 -- request 5
 select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong,
@@ -273,11 +272,53 @@ left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
 left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
 left join dich_vu_di_kem dvdk on hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem;
 
+-- request 6
+select dv.ma_dich_vu, dv.ten_dich_vu, dv.dien_tich, dv.chi_phi_thue, ldv.ten_loai_dich_vu
+from dich_vu dv
+left join loai_dich_vu ldv on dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
+left join hop_dong hd on dv.ma_dich_vu = hd.ma_dich_vu
+where dv.ma_dich_vu not in (
+select hd.ma_dich_vu
+from hop_dong hd
+where year(hd.ngay_lam_hop_dong) = 2021 and quarter(hd.ngay_lam_hop_dong) = 1)
+group by dv.ma_dich_vu;
 
+-- request 7 
+select dich_vu.ma_dich_vu, dich_vu.ten_dich_vu, dich_vu.dien_tich, dich_vu.so_nguoi_toi_da, dich_vu.chi_phi_thue, loai_dich_vu.ten_loai_dich_vu
+from dich_vu 
+left join loai_dich_vu on dich_vu.ma_loai_dich_vu = loai_dich_vu.ma_loai_dich_vu
+left join hop_dong on dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
+where dich_vu.ma_dich_vu not in (
+select hop_dong.ma_dich_vu
+from hop_dong
+where year(hop_dong.ngay_lam_hop_dong) = 2021)
+and year(hop_dong.ngay_lam_hop_dong) = 2020
+group by hop_dong.ma_dich_vu;
 
+-- request 8
+select khach_hang.ho_ten
+from khach_hang
+group by khach_hang.ho_ten;
 
+select distinct khach_hang.ho_ten
+from khach_hang;
 
+select khach_hang.ho_ten
+from khach_hang
+union
+select khach_hang.ho_ten
+from khach_hang;
 
-
-
+-- request 9 
+select month(hop_dong.ngay_lam_hop_dong) as thang, count(hop_dong.ma_khach_hang) as so_khach_dat_phong
+from hop_dong
+where year(hop_dong.ngay_lam_hop_dong) = 2021
+group by thang
+order by thang; 
+	
+-- request 10
+select  hop_dong.ma_hop_dong, hop_dong.ngay_ket_thuc, hop_dong.tien_dat_coc, ifnull(sum(hop_dong_chi_tiet.so_luong),0) as so_luong_dich_vu_di_kem
+from hop_dong
+left join hop_dong_chi_tiet on hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong
+group by hop_dong.ma_hop_dong;
 
