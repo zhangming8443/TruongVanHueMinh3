@@ -231,9 +231,13 @@ insert into furama_management.hop_dong_chi_tiet (ma_hop_dong_chi_tiet, so_luong,
 ('8', '2', '12', '2');
 
 -- request 2 
-select *
-from nhan_vien
-where ho_ten regexp '^[H,K,T]' and char_length(ho_ten) <= 15;
+SELECT 
+    *
+FROM
+    nhan_vien
+WHERE
+    ho_ten REGEXP '^[H,K,T]'
+        AND CHAR_LENGTH(ho_ten) <= 15;
 
 -- request 3
 SELECT 
@@ -263,62 +267,230 @@ WHERE
 GROUP BY ma_khach_hang;
 
 -- request 5
-select kh.ma_khach_hang, kh.ho_ten, lk.ten_loai_khach, hd.ma_hop_dong,
-dv.ten_dich_vu, hd.ngay_lam_hop_dong, hd.ngay_ket_thuc, dv.chi_phi_thue + ifnull((dvdk.gia*hdct.so_luong),0) as tong_tien
-from khach_hang kh
-left join loai_khach lk on kh.ma_loai_khach = lk.ma_loai_khach
-left join hop_dong hd on kh.ma_khach_hang = hd.ma_khach_hang  
-left join dich_vu dv on hd.ma_dich_vu = dv.ma_dich_vu
-left join hop_dong_chi_tiet hdct on hd.ma_hop_dong = hdct.ma_hop_dong
-left join dich_vu_di_kem dvdk on hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem;
+SELECT 
+    kh.ma_khach_hang,
+    kh.ho_ten,
+    lk.ten_loai_khach,
+    hd.ma_hop_dong,
+    dv.ten_dich_vu,
+    hd.ngay_lam_hop_dong,
+    hd.ngay_ket_thuc,
+    dv.chi_phi_thue + IFNULL((dvdk.gia * hdct.so_luong), 0) AS tong_tien
+FROM
+    khach_hang kh
+        LEFT JOIN
+    loai_khach lk ON kh.ma_loai_khach = lk.ma_loai_khach
+        LEFT JOIN
+    hop_dong hd ON kh.ma_khach_hang = hd.ma_khach_hang
+        LEFT JOIN
+    dich_vu dv ON hd.ma_dich_vu = dv.ma_dich_vu
+        LEFT JOIN
+    hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+        LEFT JOIN
+    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem;
 
 -- request 6
-select dv.ma_dich_vu, dv.ten_dich_vu, dv.dien_tich, dv.chi_phi_thue, ldv.ten_loai_dich_vu
-from dich_vu dv
-left join loai_dich_vu ldv on dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
-left join hop_dong hd on dv.ma_dich_vu = hd.ma_dich_vu
-where dv.ma_dich_vu not in (
-select hd.ma_dich_vu
-from hop_dong hd
-where year(hd.ngay_lam_hop_dong) = 2021 and quarter(hd.ngay_lam_hop_dong) = 1)
-group by dv.ma_dich_vu;
+SELECT 
+    dv.ma_dich_vu,
+    dv.ten_dich_vu,
+    dv.dien_tich,
+    dv.chi_phi_thue,
+    ldv.ten_loai_dich_vu
+FROM
+    dich_vu dv
+        LEFT JOIN
+    loai_dich_vu ldv ON dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
+        LEFT JOIN
+    hop_dong hd ON dv.ma_dich_vu = hd.ma_dich_vu
+WHERE
+    dv.ma_dich_vu NOT IN (SELECT 
+            hd.ma_dich_vu
+        FROM
+            hop_dong hd
+        WHERE
+            YEAR(hd.ngay_lam_hop_dong) = 2021
+                AND QUARTER(hd.ngay_lam_hop_dong) = 1)
+GROUP BY dv.ma_dich_vu;
 
 -- request 7 
-select dich_vu.ma_dich_vu, dich_vu.ten_dich_vu, dich_vu.dien_tich, dich_vu.so_nguoi_toi_da, dich_vu.chi_phi_thue, loai_dich_vu.ten_loai_dich_vu
-from dich_vu 
-left join loai_dich_vu on dich_vu.ma_loai_dich_vu = loai_dich_vu.ma_loai_dich_vu
-left join hop_dong on dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
-where dich_vu.ma_dich_vu not in (
-select hop_dong.ma_dich_vu
-from hop_dong
-where year(hop_dong.ngay_lam_hop_dong) = 2021)
-and year(hop_dong.ngay_lam_hop_dong) = 2020
-group by hop_dong.ma_dich_vu;
+SELECT 
+    dich_vu.ma_dich_vu,
+    dich_vu.ten_dich_vu,
+    dich_vu.dien_tich,
+    dich_vu.so_nguoi_toi_da,
+    dich_vu.chi_phi_thue,
+    loai_dich_vu.ten_loai_dich_vu
+FROM
+    dich_vu
+        LEFT JOIN
+    loai_dich_vu ON dich_vu.ma_loai_dich_vu = loai_dich_vu.ma_loai_dich_vu
+        LEFT JOIN
+    hop_dong ON dich_vu.ma_dich_vu = hop_dong.ma_dich_vu
+WHERE
+    dich_vu.ma_dich_vu NOT IN (SELECT 
+            hop_dong.ma_dich_vu
+        FROM
+            hop_dong
+        WHERE
+            YEAR(hop_dong.ngay_lam_hop_dong) = 2021)
+        AND YEAR(hop_dong.ngay_lam_hop_dong) = 2020
+GROUP BY hop_dong.ma_dich_vu;
 
 -- request 8
-select khach_hang.ho_ten
-from khach_hang
-group by khach_hang.ho_ten;
+SELECT 
+    khach_hang.ho_ten
+FROM
+    khach_hang
+GROUP BY khach_hang.ho_ten;
 
-select distinct khach_hang.ho_ten
-from khach_hang;
+SELECT DISTINCT
+    khach_hang.ho_ten
+FROM
+    khach_hang;
 
-select khach_hang.ho_ten
-from khach_hang
-union
-select khach_hang.ho_ten
-from khach_hang;
+SELECT 
+    khach_hang.ho_ten
+FROM
+    khach_hang 
+UNION SELECT 
+    khach_hang.ho_ten
+FROM
+    khach_hang;
 
 -- request 9 
-select month(hop_dong.ngay_lam_hop_dong) as thang, count(hop_dong.ma_khach_hang) as so_khach_dat_phong
-from hop_dong
-where year(hop_dong.ngay_lam_hop_dong) = 2021
-group by thang
-order by thang; 
+SELECT 
+    MONTH(hop_dong.ngay_lam_hop_dong) AS thang,
+    COUNT(hop_dong.ma_khach_hang) AS so_khach_dat_phong
+FROM
+    hop_dong
+WHERE
+    YEAR(hop_dong.ngay_lam_hop_dong) = 2021
+GROUP BY thang
+ORDER BY thang; 
 	
 -- request 10
-select  hop_dong.ma_hop_dong, hop_dong.ngay_ket_thuc, hop_dong.tien_dat_coc, ifnull(sum(hop_dong_chi_tiet.so_luong),0) as so_luong_dich_vu_di_kem
-from hop_dong
-left join hop_dong_chi_tiet on hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong
-group by hop_dong.ma_hop_dong;
+SELECT 
+    hop_dong.ma_hop_dong,
+    hop_dong.ngay_ket_thuc,
+    hop_dong.tien_dat_coc,
+    IFNULL(SUM(hop_dong_chi_tiet.so_luong), 0) AS so_luong_dich_vu_di_kem
+FROM
+    hop_dong
+        LEFT JOIN
+    hop_dong_chi_tiet ON hop_dong.ma_hop_dong = hop_dong_chi_tiet.ma_hop_dong
+GROUP BY hop_dong.ma_hop_dong;
+
+-- request 11 
+SELECT 
+    dvdk.ma_dich_vu_di_kem, dvdk.ten_dich_vu_di_kem
+FROM
+    dich_vu_di_kem dvdk
+        JOIN
+    hop_dong_chi_tiet hdct ON dvdk.ma_dich_vu_di_kem = hdct.ma_dich_vu_di_kem
+        JOIN
+    hop_dong hd ON hd.ma_hop_dong = hdct.ma_hop_dong
+        JOIN
+    khach_hang kh ON kh.ma_khach_hang = hd.ma_khach_hang
+        JOIN
+    loai_khach lk ON lk.ma_loai_khach = kh.ma_loai_khach
+WHERE
+    lk.ten_loai_khach = 'Diamond'
+        AND (kh.dia_chi LIKE '%Vinh%'
+        OR kh.dia_chi LIKE '%Quảng Ngãi%');
+
+-- request 12
+SELECT 
+    hd.ma_hop_dong,
+    nv.ho_ten,
+    kh.ho_ten,
+    kh.so_dien_thoai,
+    dv.ten_dich_vu,
+    SUM(hdct.so_luong) AS so_luong_dich_vu_di_kem,
+    hd.tien_dat_coc
+FROM
+    hop_dong hd
+        JOIN
+    nhan_vien nv ON hd.ma_nhan_vien = nv.ma_nhan_vien
+        JOIN
+    khach_hang kh ON hd.ma_khach_hang = kh.ma_khach_hang
+        JOIN
+    dich_vu dv ON hd.ma_dich_vu = dv.ma_dich_vu
+        JOIN
+    hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+        JOIN
+    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+WHERE
+    MONTH(ngay_lam_hop_dong) > 9
+        AND YEAR(ngay_lam_hop_dong) = 2020
+        AND hd.ma_hop_dong NOT IN (SELECT 
+            hd.ma_hop_dong
+        FROM
+            hop_dong hd
+        WHERE
+            MONTH(ngay_lam_hop_dong) < 7
+                AND YEAR(ngay_lam_hop_dong) = 2021)
+GROUP BY hd.ma_hop_dong;
+
+-- request 13
+SELECT 
+    dvdk.ma_dich_vu_di_kem,
+    dvdk.ten_dich_vu_di_kem,
+    SUM(hdct.so_luong) AS so_luong_dich_vu_di_kem
+FROM
+    hop_dong_chi_tiet hdct
+        JOIN
+    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+GROUP BY dvdk.ma_dich_vu_di_kem , dvdk.ten_dich_vu_di_kem
+HAVING SUM(hdct.so_luong) = (SELECT 
+        MAX(so_luong_dich_vu_di_kem)
+    FROM
+        (SELECT 
+            SUM(hdct.so_luong) AS so_luong_dich_vu_di_kem
+        FROM
+            hop_dong_chi_tiet hdct
+        GROUP BY ma_dich_vu_di_kem) AS sldvdk);
+
+-- request 14
+SET sql_mode = 0;
+SELECT 
+    hd.ma_hop_dong,
+    ldv.ten_loai_dich_vu,
+    dvdk.ten_dich_vu_di_kem,
+    COUNT(hdct.ma_dich_vu_di_kem) AS so_lan_su_dung
+FROM
+    dich_vu dv
+        JOIN
+    hop_dong hd ON dv.ma_dich_vu = hd.ma_dich_vu
+        JOIN
+    hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+        JOIN
+    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+        JOIN
+    loai_dich_vu ldv ON dv.ma_loai_dich_vu = ldv.ma_loai_dich_vu
+GROUP BY ten_dich_vu_di_kem
+HAVING so_lan_su_dung = 1
+ORDER BY hd.ma_hop_dong;
+SET sql_mode = 1;
+
+-- request 15
+SELECT 
+    nv.ma_nhan_vien,
+    nv.ho_ten,
+    td.ten_trinh_do,
+    bp.ten_bo_phan,
+    nv.so_dien_thoai,
+    nv.dia_chi
+FROM
+    nhan_vien nv
+        JOIN
+    trinh_do td ON nv.ma_trinh_do = td.ma_trinh_do
+        JOIN
+    bo_phan bp ON nv.ma_bo_phan = bp.ma_bo_phan
+        JOIN
+    hop_dong hd ON nv.ma_nhan_vien = hd.ma_nhan_vien
+GROUP BY hd.ma_nhan_vien
+HAVING COUNT(hd.ma_nhan_vien) > 0
+    AND COUNT(hd.ma_nhan_vien) < 4;
+
+
 
