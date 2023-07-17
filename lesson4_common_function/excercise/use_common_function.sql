@@ -12,7 +12,9 @@ join mark m on sub.sub_id = m.sub_id
 where m.mark in (select max(mark) from mark);
  
 -- Hiển thị các thông tin sinh viên và điểm trung bình của mỗi sinh viên, xếp hạng theo thứ tự điểm giảm dần
-select s.student_name, m.mark /m.exam_times as diem_trung_binh
+select *, avg(m.mark) as diem_trung_binh
 from student s 
 join mark m on s.student_id = m.student_id
+join `subject` sub on m.sub_id = sub.sub_id
+group by s.student_id
 order by m.mark desc
