@@ -1,6 +1,6 @@
 CREATE DATABASE furama_management;
 
-use furama_management;
+USE furama_management;
 
 CREATE TABLE vi_tri (
     ma_vi_tri INT,
@@ -491,6 +491,46 @@ FROM
 GROUP BY hd.ma_nhan_vien
 HAVING COUNT(hd.ma_nhan_vien) > 0
     AND COUNT(hd.ma_nhan_vien) < 4;
+
+-- request 16
+
+-- request 17
+
+-- request 18    
+ALTER TABLE khach_hang 
+ADD count int ;
+UPDATE khach_hang
+        LEFT JOIN
+    hop_dong ON khach_hang.ma_khach_hang = hop_dong.ma_khach_hang 
+SET 
+    count = 1
+WHERE
+    YEAR(hop_dong.ngay_lam_hop_dong) < 2021;
+
+-- request 19
+SET sql_safe_updates = 0;
+UPDATE dich_vu_di_kem 
+SET 
+    gia = gia * 2
+WHERE
+    ma_dich_vu_di_kem IN (SELECT 
+            ma_dich_vu_di_kem
+        FROM
+            hop_dong_chi_tiet hdct
+                JOIN
+            hop_dong hd ON hdct.ma_hop_dong = hd.ma_hop_dong
+        WHERE
+            YEAR(hd.ngay_lam_hop_dong) = 2020
+        GROUP BY hdct.ma_dich_vu_di_kem
+        HAVING SUM(hdct.so_luong) > 10);
+SET sql_safe_updates = 1;
+
+-- request 20
+SELECT ma_nhan_vien AS id, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+FROM nhan_vien
+UNION ALL
+SELECT ma_khach_hang AS id, ho_ten, email, so_dien_thoai, ngay_sinh, dia_chi
+FROM khach_hang;
 
 
 
