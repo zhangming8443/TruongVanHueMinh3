@@ -207,28 +207,28 @@ insert into furama_management.dich_vu (ma_dich_vu, ten_dich_vu, dien_tich, chi_p
 ('6', 'Room Twin 02', '3000', '900000', '2', 'normal', 'Có tivi', null, null, '1 Xe máy', '4', '3');
 
 insert into furama_management.hop_dong (ma_hop_dong, ngay_lam_hop_dong, ngay_ket_thuc, tien_dat_coc, ma_nhan_vien, ma_khach_hang, ma_dich_vu) value
-('1', '2020-12-08', '2020-12-08', '0', '3', '1', '3'),
-('2', '2020-07-14', '2020-07-21', '200000', '7', '3', '1'),
-('3', '2021-03-15', '2021-03-17', '50000', '3', '4', '2'),
-('4', '2021-01-14', '2021-01-18', '100000', '7', '5', '5'),
-('5', '2021-07-14', '2021-07-15', '0', '7', '2', '6'),
-('6', '2021-06-01', '2021-06-03', '0', '7', '7', '6'),
-('7', '2021-09-02', '2021-09-05', '100000', '7', '4', '4'),
-('8', '2021-06-17', '2021-06-18', '150000', '3', '4', '1'),
-('9', '2020-11-19', '2020-11-19', '0', '3', '4', '3'),
-('10', '2021-04-12', '2021-04-14', '0', '10', '3', '5'),
-('11', '2021-04-25', '2021-04-25', '0', '2', '2', '1'),
-('12', '2021-05-25', '2021-05-27', '0', '7', '10', '1');
+('1', '2020-12-08', '2020-12-08',	 '0',		 '3',	 '1',	 '3'),
+('2', '2020-07-14', '2020-07-21',	 '200000',	 '7',	 '3',	 '1'),
+('3', '2021-03-15', '2021-03-17',	 '50000',	 '3',	 '4',	 '2'),
+('4', '2021-01-14', '2021-01-18',	 '100000',	 '7',	 '5',	 '5'),
+('5', '2021-07-14', '2021-07-15',	 '0',		 '7',	 '2',	 '6'),
+('6', '2021-06-01', '2021-06-03',	 '0',		 '7',	 '7',	 '6'),
+('7', '2021-09-02', '2021-09-05',	 '100000',	 '7',	 '4',	 '4'),
+('8', '2021-06-17', '2021-06-18',	 '150000',	 '3',	 '4',	 '1'),
+('9', '2020-11-19', '2020-11-19',	 '0',		 '3',	 '4',	 '3'),
+('10', '2021-04-12', '2021-04-14',	 '0',		 '10',	 '3',	 '5'),
+('11', '2021-04-25', '2021-04-25',	 '0',		 '2',	 '2',	 '1'),
+('12', '2021-05-25', '2021-05-27',	 '0',		 '7',	 '10',	 '1');
 
 insert into furama_management.hop_dong_chi_tiet (ma_hop_dong_chi_tiet, so_luong, ma_hop_dong, ma_dich_vu_di_kem) value
-('1', '5', '2', '4'),
-('2', '8', '2', '5'),
-('3', '15', '2', '6'),
-('4', '1', '3', '1'),
-('5', '11', '3', '2'),
-('6', '1', '1', '3'),
-('7', '2', '1', '2'),
-('8', '2', '12', '2');
+('1', '5',	 '2', 	'4'),
+('2', '8',	 '2', 	'5'),
+('3', '15',	 '2', 	'6'),
+('4', '1',	 '3', 	'1'),
+('5', '11',	 '3', 	'2'),
+('6', '1',	 '1',	'3'),
+('7', '2',	 '1',	'2'),
+('8', '2',	 '12',	'2');
 
 -- request 2 
 SELECT 
@@ -352,7 +352,8 @@ SELECT
     khach_hang.ho_ten
 FROM
     khach_hang 
-UNION SELECT 
+UNION 
+SELECT 
     khach_hang.ho_ten
 FROM
     khach_hang;
@@ -493,8 +494,52 @@ HAVING COUNT(hd.ma_nhan_vien) > 0
     AND COUNT(hd.ma_nhan_vien) < 4;
 
 -- request 16
+SELECT 
+    nv.ma_nhan_vien, nv.ho_ten
+FROM
+    nhan_vien nv
+WHERE
+    ma_nhan_vien NOT IN (SELECT DISTINCT
+            nv.ma_nhan_vien
+        FROM
+            nhan_vien nv
+                LEFT JOIN
+            hop_dong hd ON hd.ma_nhan_vien = nv.ma_nhan_vien
+        WHERE
+            YEAR(hd.ngay_lam_hop_dong) BETWEEN 2019 AND 2021);
 
 -- request 17
+SET sql_safe_updates = 1;
+UPDATE khach_hang kh
+        JOIN
+    loai_khach lk ON kh.ma_loai_khach = lk.ma_loai_khach
+        JOIN
+    hop_dong hd ON kh.ma_khach_hang = hd.ma_khach_hang
+        JOIN
+    dich_vu dv ON hd.ma_dich_vu = dv.ma_dich_vu
+        JOIN
+    hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+        JOIN
+    dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem 
+SET 
+    kh.ma_loai_khach = 1
+WHERE
+    kh.ma_khach_hang IN (SELECT 
+            *
+        FROM
+            (SELECT 
+                kh.ma_khach_hang
+            FROM
+                khach_hang kh
+            JOIN loai_khach lk ON kh.ma_loai_khach = lk.ma_loai_khach
+            JOIN hop_dong hd ON kh.ma_khach_hang = hd.ma_khach_hang
+            JOIN dich_vu dv ON hd.ma_dich_vu = dv.ma_dich_vu
+            JOIN hop_dong_chi_tiet hdct ON hd.ma_hop_dong = hdct.ma_hop_dong
+            JOIN dich_vu_di_kem dvdk ON hdct.ma_dich_vu_di_kem = dvdk.ma_dich_vu_di_kem
+            WHERE
+                YEAR(hd.ngay_lam_hop_dong) = 2021
+                    AND ten_loai_khach = 'Platinium'
+                    AND (dvdk.gia * hdct.so_luong + dv.chi_phi_thue) > 1000000) AS temp);
 
 -- request 18    
 ALTER TABLE khach_hang 
@@ -510,7 +555,7 @@ WHERE
 -- request 19
 SET sql_safe_updates = 0;
 UPDATE dich_vu_di_kem 
-SET 
+SET 	
     gia = gia * 2
 WHERE
     ma_dich_vu_di_kem IN (SELECT 
