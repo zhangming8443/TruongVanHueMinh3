@@ -1,0 +1,10 @@
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+#textContent p {
+    text-indent: 20px;
+    padding-bottom: 10px;
+    font-family: Tahoma;
+}
