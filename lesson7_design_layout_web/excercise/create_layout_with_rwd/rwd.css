@@ -1,0 +1,13 @@
+#header a {
+    color: white;
+}#content ul {
+
+ }
+#header, #footer {
+    height: 2em;
+}
+body button {
+    width: 100px;
+    height: 50px ;
+    margin: 10%;
+}

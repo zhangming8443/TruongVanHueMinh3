@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#header img{
+    width: 9em;
+    margin: 0;
+}
+
+
+#wp-content-left strong {
+    color: black;
+}
+
+
+
+#wp-content-left {
+    padding-top: 15px;
+    background-color: #cbccce ;
+}
+
+#wp-content-right {
+    border-left: groove;
+    padding-top: 15px;
+    background-color: #CDCDCD;
+
+}
