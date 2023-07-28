@@ -3,9 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Display Customer List</title>
 </head>
 <body>
-<h2>c:out example </h2>
+<h1>WELCOME</h1>
+<a href="customer">Click here</a>
+
 </body>
 </html>

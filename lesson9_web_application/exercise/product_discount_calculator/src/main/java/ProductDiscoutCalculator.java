@@ -17,18 +17,10 @@ public class ProductDiscoutCalculator extends HttpServlet {
         double listPrice = Double.parseDouble(request.getParameter("listPrice"));
         String prdDescription = request.getParameter("prdDescription");
         double discountAmount = 0.01 * discountPercent * listPrice;
-
-        PrintWriter writer = response.getWriter();
-        writer.println("<html>");
-        writer.println("<body>");
-        writer.println("<h2>Product Description: " + prdDescription + "<h2>");
-        writer.println("<h2>List Price: " + listPrice + "<h2>");
-        writer.println("<h2>Discount Percent: " + discountPercent + "<h2>");
-        writer.println("<h2>Discount Amount: " + discountAmount + "<h2>");
-        writer.println("</body>");
-        writer.println("</html>");
-
-
-
+        request.setAttribute("discountPercent", discountAmount);
+        request.setAttribute("listPrice", listPrice);
+        request.setAttribute("prdDescription", prdDescription);
+        request.setAttribute("discountAmount", discountAmount);
+        request.getRequestDispatcher("display-discount.jsp").forward(request, response);
     }
 }
