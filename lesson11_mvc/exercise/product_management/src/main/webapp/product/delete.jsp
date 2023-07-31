@@ -45,7 +45,7 @@
             <tr>
                 <td>Image:</td>
                 <td>
-                    <img width="20%" height="20%" src="${products.getImg()}">
+                    <img width="100px" height="100px" src="${products.getImg()}">
                 </td>
             </tr>
             <tr>
