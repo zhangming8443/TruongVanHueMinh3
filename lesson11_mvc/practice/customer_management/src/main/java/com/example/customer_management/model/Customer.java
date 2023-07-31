@@ -1,19 +1,27 @@
-package com.example.display_customer_list;
+package com.example.customer_management.model;
 
 public class Customer {
+    private int id;
     private String name;
-    private String date;
+    private String email;
     private String address;
-    private String img;
 
     public Customer() {
     }
 
-    public Customer(String name, String date, String address, String img) {
+    public Customer(int id, String name, String email, String address) {
+        this.id = id;
         this.name = name;
-        this.date = date;
+        this.email = email;
         this.address = address;
-        this.img = img;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -24,12 +32,12 @@ public class Customer {
         this.name = name;
     }
 
-    public String getDate() {
-        return date;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
@@ -38,14 +46,6 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
 
 }
