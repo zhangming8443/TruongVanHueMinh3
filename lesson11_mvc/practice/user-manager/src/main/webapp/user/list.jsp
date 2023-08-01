@@ -29,7 +29,6 @@
             <th>Name</th>
             <th>Email</th>
             <th>Country</th>
-            <th>Actions</th>
         </tr>
         <c:forEach var="user" items="${listUser}">
             <tr>

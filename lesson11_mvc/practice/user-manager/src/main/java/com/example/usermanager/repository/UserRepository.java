@@ -21,6 +21,7 @@ public class UserRepository implements IUserRepository {
     private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
     private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
     private static final String SEARCH_USER_BY_COUNTRY = " select * from users where country = ? ";
+    private static final String SORT_USER_BY_NAME = " select * from users order by name ";
 
     public UserRepository() {
 
@@ -151,7 +152,36 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public String searchByCountry(String country) throws SQLException {
-        return null;
+    public List<User> searchByCountry(String country) throws SQLException {
+        List<User> userList = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_USER_BY_COUNTRY);
+        preparedStatement.setString(1, country);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String email = resultSet.getString("email");
+            User user = new User(id, name, email, country);
+            userList.add(user);
+        }
+        return userList;
+    }
+
+    @Override
+    public List<User> sortByName() throws SQLException {
+        List<User> userList = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(SORT_USER_BY_NAME);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String email = resultSet.getString("email");
+            String country = resultSet.getString("country");
+            User userSorted = new User(id, name, email, country);
+            userList.add(userSorted);
+        }
+        return userList;
     }
 }
